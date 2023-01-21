@@ -1,0 +1,11 @@
+{
+  "name": "real-time-chat-app",
+  "version": "1.0.0",
+  "description": "group and single user chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "urvish sojitra",
+  "license": "ISC"
+}
