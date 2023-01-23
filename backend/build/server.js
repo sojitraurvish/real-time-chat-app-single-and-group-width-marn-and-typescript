@@ -19,6 +19,10 @@ colors_1.default.enable();
 const app = (0, express_1.default)();
 // To Accept JSON Data
 app.use(express_1.default.json());
+// const ___dirname = path.resolve();
+const ___dirname = path_1.default.resolve();
+const rootDir = path_1.default.dirname(___dirname);
+app.use("/uploads", express_1.default.static(path_1.default.join(rootDir, "/uploads")));
 if (process.env.NODE_ENV === "development") {
     app.use((0, morgan_1.default)("dev"));
 }

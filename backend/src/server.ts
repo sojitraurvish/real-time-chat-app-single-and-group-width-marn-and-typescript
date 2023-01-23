@@ -22,6 +22,11 @@ const app=express();
 // To Accept JSON Data
 app.use(express.json())
 
+// const ___dirname = path.resolve();
+const ___dirname = path.resolve();
+const rootDir=path.dirname(___dirname);
+app.use("/uploads",express.static(path.join(rootDir,"/uploads")))
+
 if(process.env.NODE_ENV==="development"){ 
     app.use(morgan("dev"))
 }
@@ -33,6 +38,8 @@ app.get("/",(req:Request,res:Response,next:NextFunction)=>{
 app.use("/api/users",userRoutes)
 app.use("/api/chats",chatRoutes)
 app.use("/api/upload", uploadRoutes);
+
+
 
 app.use(notFound)
 
