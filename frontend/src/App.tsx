@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
+import {Route,Routes, useNavigate} from "react-router-dom"
+import Home from './pages/Home';
+import Chat from './pages/Chat';
+import styled from "styled-components"
+import {ToastContainer} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+import { RootState } from './store/store';
+import { useSelector } from 'react-redux';
 
-function App() {
+const App=()=>{
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+        <Routes>
+          <Route index path='/' element={<Home/>}/>
+          <Route path='/chats' element={<Chat/>}/>
+        </Routes>
+        <ToastContainer theme="colored"/>
     </div>
   );
 }
 
 export default App;
+

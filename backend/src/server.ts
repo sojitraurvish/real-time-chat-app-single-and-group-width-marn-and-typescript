@@ -4,32 +4,42 @@ import dotenv from "dotenv"
 import path from "path";
 import morgan from "morgan"
 import {chats} from "./data/data"
+import { errorHandler, notFound } from "./middleware/errorMiddleware";
+import connectDB from "./config/config";
+
+import userRoutes from "./routes/userRoutes"
+import chatRoutes from "./routes/chatRoutes"
+import uploadRoutes from "./routes/uploadRoutes"
 
 dotenv.config({path:path.join(__dirname,"..","config.env")})
+
+connectDB();
 
 colors.enable()
 
 const app=express();
 
-if(process.env.NODE_ENV==="development"){
+// To Accept JSON Data
+app.use(express.json())
+
+if(process.env.NODE_ENV==="development"){ 
     app.use(morgan("dev"))
 }
 
 app.get("/",(req:Request,res:Response,next:NextFunction)=>{
-    res.send("API is Running...")
+    res.send("API is Running...") 
 })
 
-app.get("/api/chat",(req:Request,res:Response,next:NextFunction)=>{
-    res.send(chats)
-})
+app.use("/api/users",userRoutes)
+app.use("/api/chats",chatRoutes)
+app.use("/api/upload", uploadRoutes);
 
-app.get("/api/chat/:id",(req:Request,res:Response,next:NextFunction)=>{
-    const singleChat=chats.find((chat)=>chat._id===req.params.id)
-    res.send(singleChat)
-})
+app.use(notFound)
+
+app.use(errorHandler)
 
 const PORT=process.env.PORT || 5000;
 
 app.listen(PORT,()=>{
-    console.log(`Server is running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold);  
+    console.log(`Server is running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold);
 })
