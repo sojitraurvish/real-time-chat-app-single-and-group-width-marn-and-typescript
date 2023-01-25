@@ -43,6 +43,8 @@ const SignUp:FC<Props>=({visible})=>{
 
     useEffect(()=>{
         if(userInfo){
+            // console.log("signup");
+            
             toast.success("Register Successfully!...");
             resetFormData()
             navigate("/chats")

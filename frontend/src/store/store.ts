@@ -8,8 +8,9 @@ import {
 import thunk,{ThunkAction,ThunkDispatch} from "redux-thunk"
 import {composeWithDevTools} from "redux-devtools-extension"
 import { ReduxState } from "./types/ReduxState"
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers"
+import { userLoginReducer, userRegisterReducer, userSearchListReducer } from "./reducers/userReducers"
 import { UserWithToken } from "./types"
+import { chatCreateReducer, chatListReducer } from "./reducers/chatReducers"
 
 export type AppDispatch=ThunkDispatch<ReduxState,unknown,Action<string>>
 
@@ -22,7 +23,11 @@ export type AppThunk=ThunkAction<
 
 export const rootReducer=combineReducers({
     userRegister:userRegisterReducer,
-    userLogin:userLoginReducer
+    userLogin:userLoginReducer,
+    userSearchList:userSearchListReducer,
+
+    chatCreate:chatCreateReducer,
+    chatList:chatListReducer
 })
 
 export type RootState=ReturnType<typeof rootReducer>

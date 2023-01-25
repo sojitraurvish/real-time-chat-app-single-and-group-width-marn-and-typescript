@@ -1,13 +1,19 @@
 import styled from "styled-components"
 import TopNevDropDown from "./TopNevDropDown"
 import { Container } from "./TopNevDropDown"
-import {MouseEvent, useEffect, useState} from "react"
+import {MouseEvent, useEffect, useState,Dispatch,FC} from "react"
 import ProfileModel from "./ProfileModel"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../store/store"
 import { logout } from "../../store/actions/userActions"
 import { useNavigate } from "react-router-dom"
-const TopNav=()=>{
+
+export type Props={
+    show:boolean
+    set:Dispatch<React.SetStateAction<boolean>>
+}
+
+const TopNav:FC<Props>=({show,set})=>{
 
     const dispatch=useDispatch<AppDispatch>()
     const navigate=useNavigate();
@@ -25,10 +31,11 @@ const TopNav=()=>{
         <>
             <TContainer>
                 <SearchBtn>
-                    <button>
+                    <button onClick={()=>set(!show)}>
                         <img src="/images/search.png" alt="" />
                         <span>Search User</span>
                     </button>
+                    <ToolTip>Search User to chat</ToolTip>
                 </SearchBtn>
                 <MainContent>
                     <img src="/images/app-icon.png" alt="" />
@@ -40,7 +47,7 @@ const TopNav=()=>{
                             <img src="/images/bell.png" alt="" />
                         </button>
                         <div style={{position:"relative"}}>
-                            <img src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png" alt="" />
+                            <img src={!userInfo?.pic ? `https://cdn-icons-png.flaticon.com/512/149/149071.png` : `/uploads/${userInfo.pic}`} alt="" />
                             <img src="/images/downarrow.png" alt="" />
                             <TopNevDropDown style={{top:"53px",right:"-37px"}}>
                                 <button onClick={()=>setProfileModel(!profileModel)}>Profile</button>
@@ -65,11 +72,25 @@ const TContainer=styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1600px;
+    /* max-width: 1600px; */
     margin:0 auto;
     border-width: 7px;
     height: 60px;
     background-color: white;
+`
+
+const ToolTip=styled.span`
+    /* border: 2px solid red; */
+    position: absolute;
+    top:35px;
+    left: 80px;
+    font-size: 15px;
+    background-color: rgba(0,0,0,0.5);
+    color:white;
+    padding: 1px 5px;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    opacity: 0;
 `
 
 const SearchBtn=styled.div`
@@ -79,6 +100,7 @@ const SearchBtn=styled.div`
     display: flex;
     align-items: center;
     justify-content:flex-start;
+    position: relative;
     button{
         background-color: transparent;
         width:40%;
@@ -97,9 +119,12 @@ const SearchBtn=styled.div`
         &:hover{
             outline:1px solid rgba(0,0,0,0.2);
             cursor: pointer;
+            border-radius: 10px;
         }
     }
-    
+    &:hover ${ToolTip}{
+        opacity: 1;
+    }
 `
 
 const MainContent=styled.div`
@@ -130,61 +155,57 @@ const RightSide=styled.div`
     
    
 
-    &>div{
-                    
-        
-            margin-right: 35px;
+    &>div{  
+        /* border:2px solid red; */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 35px;
+        width: 30%;
+        &>div{
+
             /* border:2px solid red; */
-            width: 30%;
             display:  flex;
             align-items: center;
             justify-content: space-between;
-            height: 100%;
-            &>button{
-                
-                background-color: transparent;
-                border: none;
-                height: 82%;
-               img{
-               }
-               &:first-child{
-                   img{
-                       width: 25px;
-       
-                   }
-               }
-              
+            height: 36px;
+            background-color:rgba(0,0,0,0.1) ;
+            border-radius: 10px;
+            width: 60%;
+            display:  flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            /* border:2px solid red; */
+            img{
+                width: 30px;
+                &:first-child{
+                border-radius: 50px;
+                }
+                &:nth-child(2){
+                width: 15px;
+                }
             }
-        div{
-           
-                /* border: 1px solid rgba(0,0,0,0.3); */
-               
-                background-color:rgba(0,0,0,0.1) ;
-                border-radius: 10px;
-                width: 70%;
-                display:  flex;
-                align-items: center;
-                justify-content: space-around;
-                position: relative;
-                
-                   img{
-                       width: 30px;
-                       &:first-child{
-                        border-radius: 50px;
-                       }
-                       &:nth-child(2){
-                        width: 15px;
-                       }
-                   }
-                   &:hover{
-                        /* border: 2px solid red; */
-                        outline:2px solid rgba(0,0,0,0.3);
-                        ${Container} {
-                            opacity: 1;
-                        }
-                    } 
-                   
-               
+            &:hover{
+                /* border: 2px solid red; */
+                outline:2px solid rgba(0,0,0,0.3);
+                ${Container} {
+                    opacity: 1;
+                }
+            } 
+        }
+        &>button{
+            background-color: transparent;
+            border: none;
+            height: 82%;
+            img{
+            }
+            &:first-child{
+                img{
+                    width: 25px;
+    
+                }
+            }
         }
     }
 `

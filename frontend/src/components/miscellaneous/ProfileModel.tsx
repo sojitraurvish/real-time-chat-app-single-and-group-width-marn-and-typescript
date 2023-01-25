@@ -11,6 +11,9 @@ export type Props={
 }
 
 const ProfileModel:FC<Props>=({user,visible=true,style,children,myOnClick})=>{
+
+    if(!user || user === undefined) {return(<></>)}
+
     return (
         <Container visible={visible} style={style}>
             {

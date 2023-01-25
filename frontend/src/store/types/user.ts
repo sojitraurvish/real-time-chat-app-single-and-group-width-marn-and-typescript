@@ -12,3 +12,4 @@ export interface UserWithToken extends User{
 export interface UserWidthPassword extends User{
     password:string
 }
+

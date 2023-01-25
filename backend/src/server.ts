@@ -20,7 +20,7 @@ colors.enable()
 const app=express();
 
 // To Accept JSON Data
-app.use(express.json())
+app.use(express.json()) 
 
 // const ___dirname = path.resolve();
 const ___dirname = path.resolve();

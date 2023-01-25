@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAction } from "../../utils/reducer.utils";
 import { AppThunk } from "../store";
-import { UserWithToken, USER_REGISTER_ACTION_TYPE } from "../types";
+import { UserWithToken, USER_REGISTER_ACTION_TYPE, USER_SEARCH_LIST_ACTION_TYPE } from "../types";
 import { USER_LOGIN_ACTION_TYPE } from "../types/userLogin";
 import { errorHandler } from "./errorHandler";
 
@@ -100,4 +100,45 @@ export const login = (email: string, password: string): AppThunk => async (
     dispatch({ type: USER_REGISTER_ACTION_TYPE.USER_REGISTER_RESET });
     dispatch({ type: USER_LOGIN_ACTION_TYPE.USER_LOGOUT });
    
+  };
+
+  /**
+ * List Products action creator
+ * Actions related to listing all products
+ */
+  export const listSearchUsers = (keyword: string=""): AppThunk => async (
+    dispatch,
+    getState
+  ) => {
+    try {
+      dispatch(createAction(
+        USER_SEARCH_LIST_ACTION_TYPE.USER_SEARCH_LIST_REQUEST
+      ));
+  
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      // Axios config
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+  
+      const { data } = await axios.get(`/api/users?search=${keyword}`, config);
+  
+      dispatch(createAction(
+        USER_SEARCH_LIST_ACTION_TYPE.USER_SEARCH_LIST_SUCCESS,
+        data
+      ));
+  
+    } catch (error) {
+      dispatch({
+        type: USER_SEARCH_LIST_ACTION_TYPE.USER_SEARCH_LIST_FAIL,
+        payload: errorHandler(error),
+      });
+    }
   };

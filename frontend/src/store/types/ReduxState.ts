@@ -1,7 +1,14 @@
+import { ChatCreateState } from "./chatCreate";
+import { ChatListState } from "./chatList";
 import { UserLoginState } from "./userLogin";
 import { UserRegisterState } from "./userRegister";
+import { UserSearchListState } from "./userSearchList";
 
 export interface ReduxState{
     userRegister:UserRegisterState,
-    userLogin:UserLoginState
+    userLogin:UserLoginState,
+    userSearchList:UserSearchListState,
+
+    chatCreate:ChatCreateState,
+    chatList:ChatListState
 }

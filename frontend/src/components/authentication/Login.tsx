@@ -32,6 +32,7 @@ const Login:FC<Props>=({visible})=>{
 
     useEffect(()=>{
         if(userInfo){
+            // console.log("signup");
             toast.success("Login Successfully!...");
             resetFormData()
             navigate("/chats")

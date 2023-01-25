@@ -19,6 +19,7 @@ export default TopNevDropDown
 export const Container=styled.div`
     
     background-color: white;
+    border:1px solid black;
     position:absolute;
     top:64px;
     right: 7px;
