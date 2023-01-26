@@ -13,6 +13,7 @@ export * from "./userSearchList"
 export * from "./chat"
 export * from "./chatCreate"
 export * from "./chatList"
+export * from "./groupChatCreate"
 
 
 /**

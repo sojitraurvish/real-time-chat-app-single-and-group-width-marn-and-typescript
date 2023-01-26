@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAction } from "../../utils/reducer.utils";
 import { AppThunk } from "../store";
-import { CHAT_CREATE_ACTION_TYPE, CHAT_LIST_ACTION_TYPE } from "../types";
+import { CHAT_CREATE_ACTION_TYPE, CHAT_LIST_ACTION_TYPE, GROP_CHAT_CREATE_ACTION_TYPE, User } from "../types";
 import { errorHandler } from "./errorHandler";
 
 export const chatCreate = (userId:string): AppThunk => async (
@@ -83,6 +83,57 @@ export const chatList = (): AppThunk => async (
     } catch (error) {
       dispatch({
         type: CHAT_LIST_ACTION_TYPE.CHAT_LIST_FAIL,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+export const groupChatCreate = (groupName:string,users:User[]): AppThunk => async (
+    dispatch,
+    getState
+  ) => {
+    try {
+      dispatch(createAction(
+        GROP_CHAT_CREATE_ACTION_TYPE.GROP_CHAT_CREATE_REQUEST
+      ));
+  
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+        chatList:{chatList}
+      } = getState();
+  
+      // Axios config
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+  
+      const { data } = await axios.post(`/api/chats/group`,{
+        name:groupName,
+        users:JSON.stringify(users.map((u)=>u._id))
+      }, config);
+    //   console.log(data);
+
+    if(!chatList?.find((c)=>c._id===data._id)){
+        console.log("grop");
+        
+        dispatch(createAction(
+            CHAT_LIST_ACTION_TYPE.CHAT_LIST_UPEND,
+            data
+        ))
+      }
+      
+      dispatch(createAction(
+        GROP_CHAT_CREATE_ACTION_TYPE.GROP_CHAT_CREATE_SUCCESS,
+        data
+      ));
+  
+    } catch (error) {
+      dispatch({
+        type: GROP_CHAT_CREATE_ACTION_TYPE.GROP_CHAT_CREATE_FAIL,
         payload: errorHandler(error),
       });
     }

@@ -106,7 +106,7 @@ export const login = (email: string, password: string): AppThunk => async (
  * List Products action creator
  * Actions related to listing all products
  */
-  export const listSearchUsers = (keyword: string=""): AppThunk => async (
+  export const listSearchUsers = (keyword: string): AppThunk => async (
     dispatch,
     getState
   ) => {

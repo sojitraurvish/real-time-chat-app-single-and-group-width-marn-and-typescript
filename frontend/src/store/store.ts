@@ -10,7 +10,7 @@ import {composeWithDevTools} from "redux-devtools-extension"
 import { ReduxState } from "./types/ReduxState"
 import { userLoginReducer, userRegisterReducer, userSearchListReducer } from "./reducers/userReducers"
 import { UserWithToken } from "./types"
-import { chatCreateReducer, chatListReducer } from "./reducers/chatReducers"
+import { chatCreateReducer, chatListReducer, groupChatCreateReducer } from "./reducers/chatReducers"
 
 export type AppDispatch=ThunkDispatch<ReduxState,unknown,Action<string>>
 
@@ -27,7 +27,8 @@ export const rootReducer=combineReducers({
     userSearchList:userSearchListReducer,
 
     chatCreate:chatCreateReducer,
-    chatList:chatListReducer
+    chatList:chatListReducer,
+    groupChatCreate:groupChatCreateReducer
 })
 
 export type RootState=ReturnType<typeof rootReducer>

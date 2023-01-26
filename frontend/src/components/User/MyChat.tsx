@@ -4,34 +4,36 @@ import {FC} from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Dispatch } from "redux"
 import { createAction } from "../../utils/reducer.utils"
-import { RootState } from "../../store/store"
+import { AppDispatch, RootState } from "../../store/store"
 import { getSender } from "../../utils/ChatLogic"
 
 export type Props={
     chat:Chat,
-    dispatch:Dispatch
+    // dispatch:Dispatch
 }
 
-const MyChat:FC<Props>=({chat,dispatch})=>{
+const MyChat:FC<Props>=({chat})=>{
+    const dispatch=useDispatch<AppDispatch>();
 
     const {createdChat}=useSelector((state:RootState)=>state.chatCreate)
     const {userInfo}=useSelector((state:RootState)=>state.userLogin)
 
-
+    if(!userInfo || userInfo === undefined) {return(<></>)}
+    
     const sender=getSender(userInfo!,chat.users)
 
     return (
 
     <Container idSelected={createdChat?._id===chat._id} onClick={()=>dispatch(createAction(CHAT_CREATE_ACTION_TYPE.CHAT_CREATE_SUCCESS,chat))}>
             <First>
-                <img src={sender.pic ? `/uploads${sender.pic}` :`https://cdn-icons-png.flaticon.com/512/149/149071.png`} alt="" />
+                <img src={chat?.isGroupChat ? `https://assets.webiconspng.com/uploads/2016/12/Group-Icon-PNG.png` :sender.pic ? `/uploads${sender.pic}` :`https://cdn-icons-png.flaticon.com/512/149/149071.png`} alt="" />
             </First>
             <Second>
                 <div>{chat?.isGroupChat 
                     ? chat.chatName
                     : sender.name}
                 </div>
-                <div><span>Email : </span>{}</div>
+                <div><span>Email : </span>{"Fsdf"}</div>
             </Second>
     </Container>
     )

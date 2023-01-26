@@ -3,66 +3,13 @@ import { useDispatch } from "react-redux"
 import styled from "styled-components";
 import { chatList } from "../store/actions/chatActions";
 import { AppDispatch } from "../store/store"
+import SingleChat from "./SingleChat";
 
 const MyChats=()=>{
 
-    const dispatch=useDispatch<AppDispatch>();
-
-    useEffect(()=>{
-        dispatch(chatList())
-    },[])
-
     return (
         <Container>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
-            <div>fdsfsfsddsfsdfds</div>
+            <SingleChat/>
         </Container>
     )
 }
@@ -70,8 +17,8 @@ const MyChats=()=>{
 export default MyChats
 
 const Container=styled.div`
-    width: 69%;
-    border:2px solid red;   
+    width: 70%;
+    /* border:2px solid red;    */
     background-color: white;
     height: 98%;
     border-radius: 10px;

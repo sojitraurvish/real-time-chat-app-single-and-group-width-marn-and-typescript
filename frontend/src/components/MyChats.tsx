@@ -3,33 +3,39 @@ import { toast } from "react-toastify"
 import styled from "styled-components"
 import { AppDispatch, RootState } from "../store/store"
 import ChatLoading from "./ChatLoading"
+import GroupChatModel from "./miscellaneous/GropChatModel"
 import MyChat from "./User/MyChat"
+import {useState} from "react"
 
 const ChatBox=()=>{
 
+    const [gropModel,setGroupModel]=useState<boolean>(false);
     const {chatList,error,loading}=useSelector((state:RootState)=>state.chatList)
 
     const dispatch=useDispatch<AppDispatch>();
 
     return (
-        <Container>
+        <>
+            <Container>
 
-                <First>
-                    <div>My Chats</div>
-                    <button>New Group Chat +</button>
-                </First>
-   
-                <Section>
-                        {
-                            loading ? <ChatLoading/> : error ? toast.error(`${error}`) :
-                            chatList?.map((chat)=>(
-                                <MyChat key={chat._id} chat={chat} dispatch={dispatch} />
-                            ))
-                        }
-                        { !chatList?.length && <>Not Found...</>}
-                </Section>
+                    <First>
+                        <div>My Chats</div>
+                        <button onClick={()=>setGroupModel(!gropModel)}>New Group Chat +</button>
+                    </First>
+    
+                    <Section>
+                            {
+                                loading ? <ChatLoading/> : error ? toast.error(`${error}`) :
+                                chatList?.map((chat)=>(
+                                    <MyChat key={chat._id} chat={chat} />
+                                ))
+                            }
+                            { !chatList?.length && <>Not Found...</>}
+                    </Section>
 
-        </Container>
+            </Container>
+            <GroupChatModel visible={gropModel} myOnClick={setGroupModel}/>
+        </>
     )
 }
 export default ChatBox
