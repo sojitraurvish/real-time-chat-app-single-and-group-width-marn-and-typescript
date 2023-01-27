@@ -1,13 +1,14 @@
 import {useEffect,useState} from "react"
 import axios from "axios"
-import { useSelector } from "react-redux"
-import { RootState } from "../store/store"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../store/store"
 import styled from "styled-components"
 import MyChats from "../components/MyChats"
 import ChatBox from "../components/ChatBox"
 import TopNav from "../components/miscellaneous/TopNav"
 import { useNavigate } from "react-router-dom"
 import LeftSideSearchDrower from "../components/miscellaneous/LeftSideSearchDrower"
+import { chatList } from "../store/actions/chatActions"
 
 const Chat=()=>{
 
@@ -15,6 +16,19 @@ const Chat=()=>{
 
     const navigate=useNavigate();
     const {userInfo}=useSelector((state:RootState)=>state.userLogin)
+
+    const {chatList:myChatList}=useSelector((state:RootState)=>state.chatList)
+    const {updatedNameOfGroup}=useSelector((state:RootState)=>state.groupNameUpdate)
+    const {addedUserToGroup}=useSelector((state:RootState)=>state.addUserToGroup)
+    const {deletedUserToGroup}=useSelector((state:RootState)=>state.deleteUserToGroup)
+
+    const dispatch=useDispatch<AppDispatch>();
+
+    useEffect(()=>{
+        // if(!myChatList){
+            dispatch(chatList())
+        // }
+    },[updatedNameOfGroup,addedUserToGroup,deletedUserToGroup])
 
     useEffect(()=>{
         if(!userInfo){

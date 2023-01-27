@@ -13,6 +13,7 @@ const config_1 = __importDefault(require("./config/config"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const chatRoutes_1 = __importDefault(require("./routes/chatRoutes"));
 const uploadRoutes_1 = __importDefault(require("./routes/uploadRoutes"));
+const messageRoutes_1 = __importDefault(require("./routes/messageRoutes"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, "..", "config.env") });
 (0, config_1.default)();
 colors_1.default.enable();
@@ -31,6 +32,7 @@ app.get("/", (req, res, next) => {
 });
 app.use("/api/users", userRoutes_1.default);
 app.use("/api/chats", chatRoutes_1.default);
+app.use("/api/messages", messageRoutes_1.default);
 app.use("/api/upload", uploadRoutes_1.default);
 app.use(errorMiddleware_1.notFound);
 app.use(errorMiddleware_1.errorHandler);

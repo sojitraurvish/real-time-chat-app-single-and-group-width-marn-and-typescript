@@ -63,7 +63,7 @@ const Login:FC<Props>=({visible})=>{
 
     return(
         <Container visible={visible}>
-            {error && toast.error(`${error as Error}`)}
+            {/* {error && toast.error(`${error as Error}`)} */}
             {loading && <Loader style={{
                 position:"absolute",
                 left:"38%",

@@ -10,7 +10,8 @@ import {composeWithDevTools} from "redux-devtools-extension"
 import { ReduxState } from "./types/ReduxState"
 import { userLoginReducer, userRegisterReducer, userSearchListReducer } from "./reducers/userReducers"
 import { UserWithToken } from "./types"
-import { chatCreateReducer, chatListReducer, groupChatCreateReducer } from "./reducers/chatReducers"
+import { addUserToGroupReducer, chatCreateReducer, chatListReducer, deleteUserToGroupReducer, groupChatCreateReducer, groupNameUpdateReducer } from "./reducers/chatReducers"
+import { listAllMessagesReducer, sendMessageReducer } from "./reducers/messageReducer"
 
 export type AppDispatch=ThunkDispatch<ReduxState,unknown,Action<string>>
 
@@ -28,7 +29,13 @@ export const rootReducer=combineReducers({
 
     chatCreate:chatCreateReducer,
     chatList:chatListReducer,
-    groupChatCreate:groupChatCreateReducer
+    groupChatCreate:groupChatCreateReducer,
+    groupNameUpdate:groupNameUpdateReducer,
+    addUserToGroup:addUserToGroupReducer,
+    deleteUserToGroup:deleteUserToGroupReducer,
+
+    sendMessage:sendMessageReducer,
+    listAllMessages:listAllMessagesReducer
 })
 
 export type RootState=ReturnType<typeof rootReducer>

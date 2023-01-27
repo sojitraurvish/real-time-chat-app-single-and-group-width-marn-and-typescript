@@ -42,6 +42,7 @@ const MyChat:FC<Props>=({chat})=>{
 export default MyChat
 
 const Container=styled.button<{idSelected:boolean}>`
+
     width: 84%;
     /* min-height: 10%; */
     margin:4px 0;
@@ -53,12 +54,13 @@ const Container=styled.button<{idSelected:boolean}>`
     justify-content: space-between;
     border: none;
     border-radius: 10px;
-    background-color: ${(props)=>{
-        return props.idSelected ? "#39b1ab" :"initial";
-    }};
     &:hover{
         background-color: #39b1ab;
     }
+    background-color: ${(props)=>{
+        return props.idSelected ? "#39b1ab !important" :"initial";
+    }};
+    background-color: #e9e7e9;
 `
 const First=styled.div`
 /* min-height: 100%; */

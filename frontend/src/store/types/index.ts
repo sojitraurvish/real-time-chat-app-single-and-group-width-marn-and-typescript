@@ -14,7 +14,11 @@ export * from "./chat"
 export * from "./chatCreate"
 export * from "./chatList"
 export * from "./groupChatCreate"
-
+export * from "./groupNameUpdate"
+export * from "./addUserToGroup"
+export * from "./deleteUserToGroup"
+export * from "./sendMessage"
+export * from "./listAllMessages"
 
 /**
  * ReduxState exports

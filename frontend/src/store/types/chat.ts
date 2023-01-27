@@ -5,6 +5,8 @@ export interface Chat{
     chatName:string,
     isGroupChat:boolean,
     users:User[]
-    groupAdmin:User
+    groupAdmin:User,
+    latestMessage:string,
+    createdAt:string
 }
 

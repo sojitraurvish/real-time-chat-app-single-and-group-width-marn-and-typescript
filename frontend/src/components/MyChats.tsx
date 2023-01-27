@@ -1,3 +1,4 @@
+import { chatList } from "../store/actions/chatActions";
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import styled from "styled-components"
@@ -5,14 +6,13 @@ import { AppDispatch, RootState } from "../store/store"
 import ChatLoading from "./ChatLoading"
 import GroupChatModel from "./miscellaneous/GropChatModel"
 import MyChat from "./User/MyChat"
-import {useState} from "react"
+import {useState,useEffect} from "react"
+// import {chatList} from "../store/actions/chatActions"
 
 const ChatBox=()=>{
 
     const [gropModel,setGroupModel]=useState<boolean>(false);
     const {chatList,error,loading}=useSelector((state:RootState)=>state.chatList)
-
-    const dispatch=useDispatch<AppDispatch>();
 
     return (
         <>

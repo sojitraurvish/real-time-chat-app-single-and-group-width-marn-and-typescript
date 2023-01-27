@@ -1,12 +1,12 @@
 import { FC,Dispatch} from "react"
 import styled, { CSSProperties } from "styled-components";
-import { UserWithToken } from "../../store/types";
+import { User, UserWithToken } from "../../store/types";
 
 export type Props={
     children?:string | JSX.Element | JSX.Element[];
     style?:CSSProperties;
     visible:boolean;
-    user:UserWithToken;
+    user:UserWithToken | User;
     myOnClick:Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -27,9 +27,8 @@ const ProfileModel:FC<Props>=({user,visible=true,style,children,myOnClick})=>{
                         <div>
                             {user.name}
                         </div>
-                        <img src={`/uploads${user.pic}`} alt="" />
+                        <img src={user.pic ? `/uploads${user.pic}` : `https://cdn-icons-png.flaticon.com/512/149/149071.png`} alt="" />
                         <div>{user.email}</div>
-                        
                     </Content>
                 )
             }

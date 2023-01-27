@@ -10,6 +10,7 @@ import connectDB from "./config/config";
 import userRoutes from "./routes/userRoutes"
 import chatRoutes from "./routes/chatRoutes"
 import uploadRoutes from "./routes/uploadRoutes"
+import messageRoutes from "./routes/messageRoutes"
 
 dotenv.config({path:path.join(__dirname,"..","config.env")})
 
@@ -37,6 +38,7 @@ app.get("/",(req:Request,res:Response,next:NextFunction)=>{
 
 app.use("/api/users",userRoutes)
 app.use("/api/chats",chatRoutes)
+app.use("/api/messages",messageRoutes)
 app.use("/api/upload", uploadRoutes);
 
 
