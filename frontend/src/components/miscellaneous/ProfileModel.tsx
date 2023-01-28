@@ -39,6 +39,7 @@ const ProfileModel:FC<Props>=({user,visible=true,style,children,myOnClick})=>{
 export default ProfileModel
 
 const Container=styled.div`
+z-index: 10000;
     position: absolute;
     top:0;
     right: 0;

@@ -37,6 +37,21 @@ app.use("/api/upload", uploadRoutes_1.default);
 app.use(errorMiddleware_1.notFound);
 app.use(errorMiddleware_1.errorHandler);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold);
+});
+// import io from "socket.io"
+const socket_1 = require("./socket");
+const io = (0, socket_1.init)(server);
+io.on("connection", (socket) => {
+    console.log("connected to socket io");
+    socket.on("setup", (userData) => {
+        socket.join(userData._id);
+        // console.log(userData._id); 
+        socket.emit("connected");
+    });
+    socket.on("join chat", (room) => {
+        socket.join(room);
+        console.log("User Join Room:" + room);
+    });
 });

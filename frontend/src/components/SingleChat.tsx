@@ -3,7 +3,7 @@ import {useState,ChangeEvent,KeyboardEvent,useEffect} from "react"
 import styled from "styled-components"
 import { AppDispatch, RootState } from "../store/store"
 import { CHAT_CREATE_ACTION_TYPE } from "../store/types"
-import { getSender } from "../utils/ChatLogic"
+import { getSender, isLastMessage, isSameSenderMargin } from "../utils/ChatLogic"
 import { createAction } from "../utils/reducer.utils"
 import ProfileModel from "./miscellaneous/ProfileModel"
 import GroupDetailsUpdateModel from "./miscellaneous/GroupDetailsUpdateModel"
@@ -13,7 +13,12 @@ import { toast } from "react-toastify"
 import ScrollableMessages from "./MyMessage"
 import Message from "./MyMessage"
 import MyMessage from "./MyMessage"
+import { isSameSender } from "../utils/ChatLogic"
+import ScrollableFeed from "react-scrollable-feed"
+import {Helmet} from "react-helmet"
+import {io,Socket} from "socket.io-client"
 
+let socket:Socket,selectedChatCompare;
 
 const SingleChat=()=>{
     
@@ -22,15 +27,25 @@ const SingleChat=()=>{
     const [profileModel,setProfileModel]=useState(false)
     const [gropDetailsUpdateModel,setGroupDetailsUpdateModel]=useState<boolean>(false);
     const [newMessage,setNewMessage]=useState("");
+    const [socketConneted,setSocketConnected]=useState(false)
 
     const {userInfo}=useSelector((state:RootState)=>state.userLogin)
     const {messages,loading,error}=useSelector((state:RootState)=>state.listAllMessages)
 
     useEffect(()=>{
+        socket=io(/*here you can provide endpoint but here we have already added proxy in package.json *http://localhost:5000... */)
+        socket.emit("setup",userInfo)
+        socket.on("connection",()=>setSocketConnected(true))
+    },[])
+
+    useEffect(()=>{
         if(createdChat){
             dispatch(listMessages(createdChat._id))
+            socket.emit("join chat",createdChat._id)
         }
+        selectedChatCompare=createdChat
     },[createdChat])
+
 
     if(!userInfo || userInfo === undefined || !createdChat || createdChat === undefined) {return(<div style={{height:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>Click on user to start chatting</div>)}
     
@@ -80,17 +95,44 @@ const SingleChat=()=>{
                         
                         <Second>
                             <MessageContainer>
+                                <ScrollableFeed>
+                            
                                 {loading && <Loader style={{position:"absolute",top:"50%",left:"60%"}}/>}
                                 {!messages
                                 ?<>No Messages</>
                                 :(
                                     // <>messages</>
-                                    messages.map((message)=>(
-                                        <MyMessage key={message._id} mymessage={message}/>
+                                   messages && messages.map((message,i)=>(
+                                            
+                                            <MineMessage>  
+                                                {
+
+                                                    (isSameSender(messages,message,i,userInfo._id) || 
+                                                    isLastMessage(messages,i,userInfo._id)) && (
+                                                        <>
+                                                        <img src={message.sender.pic ?`/uploads/${message.sender.pic}` : `https://cdn-icons-png.flaticon.com/512/149/149071.png`}
+                                                        style={{width:"30px",height:"30px",border:"1px solid black",display:"inline-block",marginRight:"10px",borderRadius:"50%"}}
+                                                        alt="" />
+                                                            <ToolTip>
+                                                                {message.sender.name}
+                                                            </ToolTip>
+                                                        
+                                                        </>
+                                                        
+                                                        )
+                                                    }
+                                                <MyMessage style={{marginLeft:isSameSenderMargin(messages,message,i,userInfo._id)}}  key={message._id} mymessage={message}/>
+
+                                            </MineMessage>
+                                                   
+                                                   
+                                                   
+                                                   
                                     ))
-                                )
+                                    )
                                 }
                                 
+                                </ScrollableFeed>
                             </MessageContainer>
                             <MessageInput>
                                 <input type="text" onKeyDown={(e)=>sendMessage(e)} value={newMessage} onChange={(e)=>typingHandler(e)}/>
@@ -109,6 +151,38 @@ const SingleChat=()=>{
 }
 
 export default SingleChat
+
+const ToolTip=styled.span`
+    position: absolute;
+    top: 38px;
+    left: 28px;
+    background-color: rgba(0,0,0,0.5);
+    color:white;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    padding:6px 15px;
+    opacity:0;
+`
+
+const MineMessage=styled.div` 
+    /* min-height:max-content; */
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    /* border: 2px solid red; */
+    /* flex-direction: column-reverse; */
+    /* justify-content: center; */
+    &:hover{
+        ${ToolTip}:hover{
+            opacity: 1;
+        }
+    }
+    /* z-index: -1; */
+`
+
+
+    
 
 const Container=styled.div `
     overflow:hidden;
@@ -180,8 +254,34 @@ const MessageContainer=styled.div`
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    padding-right: 0%;
+    /* border:2px solid red; */
+    &>div{
+
+    ::-webkit-scrollbar {
+    width: 7px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+    }
+}
 
 ::-webkit-scrollbar {
   width: 7px;

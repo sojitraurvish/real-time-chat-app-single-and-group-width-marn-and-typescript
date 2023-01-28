@@ -17,7 +17,7 @@ const TopNevDropDown:FC<Props>=({children,style})=>{
 export default TopNevDropDown
 
 export const Container=styled.div`
-    
+    z-index: 1000;
     background-color: white;
     border:1px solid black;
     position:absolute;

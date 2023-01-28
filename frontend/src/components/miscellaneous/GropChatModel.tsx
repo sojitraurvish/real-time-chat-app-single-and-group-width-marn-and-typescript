@@ -133,6 +133,7 @@ const GroupChatModel:FC<Props>=({visible,style,children,myOnClick})=>{
 export default GroupChatModel
 
 const Container=styled.div`
+    z-index: 10000;
     overflow: hidden;
     position: absolute;
     top:0;

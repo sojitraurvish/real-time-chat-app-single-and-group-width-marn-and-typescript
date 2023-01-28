@@ -4,7 +4,7 @@ import { User } from "./user"
 export interface Message{
     _id:string,
     sender:{
-        id:string,
+        _id:string,
         name:string,
         pic:string
     },

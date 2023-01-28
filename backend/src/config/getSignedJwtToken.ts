@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
 
-export const getSignedJwtToken=(_id:mongoose.Types.ObjectId)=>{
+export const getSignedJwtToken=(_id:string)=>{
     if(!process.env.JWT_SECRET){
         console.log("Error : JWT_SECRET define into env file or not able to read it".red);
         return;
