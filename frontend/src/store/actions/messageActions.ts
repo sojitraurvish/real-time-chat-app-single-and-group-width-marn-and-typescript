@@ -16,7 +16,8 @@ export const sendMessage = (message:string,chatID:string): AppThunk => async (
       // Get user info from the userLogin object (from getState)
       const {
         userLogin: { userInfo },
-        listAllMessages:{messages}
+        listAllMessages:{messages},
+        createSocket:{socket}
       } = getState();
   
       // Axios config
@@ -37,6 +38,8 @@ export const sendMessage = (message:string,chatID:string): AppThunk => async (
         SEND_MESSAGE_ACTION_TYPE.SEND_MESSAGE_SUCCESS,
         data
       ));
+
+      socket?.emit("new_message",data)
 
       if(!messages?.find((m)=>m._id===data._id)){
         dispatch(createAction(
@@ -70,6 +73,7 @@ export const listMessages = (chatID:string): AppThunk => async (
       // Get user info from the userLogin object (from getState)
       const {
         userLogin: { userInfo },
+        createSocket:{socket}
       } = getState();
   
       // Axios config
@@ -87,6 +91,8 @@ export const listMessages = (chatID:string): AppThunk => async (
         LIST_ALL_MESSAGES_ACTION_TYPE.LIST_ALL_MESSAGES_SUCCESS,
         data
       ));
+
+      socket!.emit("join chat",chatID)
 
     //   dispatch(createAction(
     //     CHAT_CREATE_ACTION_TYPE.CHAT_CREATE_SUCCESS,

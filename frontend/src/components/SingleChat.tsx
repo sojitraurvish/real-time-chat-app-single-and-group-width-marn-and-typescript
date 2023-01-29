@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
-import {useState,ChangeEvent,KeyboardEvent,useEffect} from "react"
+import {useState,ChangeEvent,KeyboardEvent,useEffect, useCallback} from "react"
 import styled from "styled-components"
 import { AppDispatch, RootState } from "../store/store"
-import { CHAT_CREATE_ACTION_TYPE } from "../store/types"
+import { Chat, CHAT_CREATE_ACTION_TYPE, LIST_ALL_MESSAGES_ACTION_TYPE } from "../store/types"
 import { getSender, isLastMessage, isSameSenderMargin } from "../utils/ChatLogic"
 import { createAction } from "../utils/reducer.utils"
 import ProfileModel from "./miscellaneous/ProfileModel"
@@ -11,14 +11,14 @@ import Loader from "./Loader"
 import {listMessages, sendMessage as mySendMessage} from "../store/actions/messageActions"
 import { toast } from "react-toastify"
 import ScrollableMessages from "./MyMessage"
-import Message from "./MyMessage"
 import MyMessage from "./MyMessage"
 import { isSameSender } from "../utils/ChatLogic"
 import ScrollableFeed from "react-scrollable-feed"
 import {Helmet} from "react-helmet"
 import {io,Socket} from "socket.io-client"
+import { Message } from "../store/types/message"
 
-let socket:Socket,selectedChatCompare;
+let selectedChatCompare:Chat;
 
 const SingleChat=()=>{
     
@@ -31,21 +31,36 @@ const SingleChat=()=>{
 
     const {userInfo}=useSelector((state:RootState)=>state.userLogin)
     const {messages,loading,error}=useSelector((state:RootState)=>state.listAllMessages)
+    const {socket}=useSelector((state:RootState)=>state.createSocket)
 
     useEffect(()=>{
-        socket=io(/*here you can provide endpoint but here we have already added proxy in package.json *http://localhost:5000... */)
-        socket.emit("setup",userInfo)
-        socket.on("connection",()=>setSocketConnected(true))
-    },[])
+        // console.log(createSocket);
+        if(!socket?.connected) return;
+        socket!.emit("setup",userInfo)
+        socket!.on("connection",()=>setSocketConnected(true))
+    },[socket])
 
     useEffect(()=>{
         if(createdChat){
             dispatch(listMessages(createdChat._id))
-            socket.emit("join chat",createdChat._id)
+            //emit
         }
-        selectedChatCompare=createdChat
+        selectedChatCompare=createdChat!
     },[createdChat])
 
+    useEffect(()=>{ 
+        if(!socket?.connected) return;   
+        socket!.on("message_received",(newMessageReceived:Message)=>{
+            console.log("hello"); 
+            
+            if(!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id){
+                //give notification
+            }
+            else{
+                dispatch(createAction(LIST_ALL_MESSAGES_ACTION_TYPE.LIST_ALL_MESSAGES_UPEND,newMessageReceived))
+            }
+        })
+    },[socket])
 
     if(!userInfo || userInfo === undefined || !createdChat || createdChat === undefined) {return(<div style={{height:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>Click on user to start chatting</div>)}
     
@@ -59,9 +74,14 @@ const SingleChat=()=>{
     }
 
     const sendMessage=(e:KeyboardEvent<HTMLInputElement>)=>{
+        // console.log(socket);
+        
+        if(!socket?.connected)return;
         if(e.key==="Enter" && newMessage){
            dispatch(mySendMessage(newMessage,createdChat._id))
+           //emit
            setNewMessage("")
+        //    console.log(newMessage);
         }
     }
 
@@ -104,7 +124,7 @@ const SingleChat=()=>{
                                     // <>messages</>
                                    messages && messages.map((message,i)=>(
                                             
-                                            <MineMessage>  
+                                            <MineMessage key={message._id}>  
                                                 {
 
                                                     (isSameSender(messages,message,i,userInfo._id) || 

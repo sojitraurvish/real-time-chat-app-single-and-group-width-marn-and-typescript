@@ -4,8 +4,9 @@ import styled from "styled-components"
 import {toast} from "react-toastify"
 import Loader from "../Loader"
 import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch } from "../../store/store"
-import { ReduxState } from "../../store/types"
+import { AppDispatch, RootState } from "../../store/store"
+// import { ReduxState } from "../../store/types"
+
 import { register } from "../../store/actions/userActions"
 import { useNavigate } from "react-router-dom"
 
@@ -30,7 +31,7 @@ const SignUp:FC<Props>=({visible})=>{
     const navigate=useNavigate();
     const dispatch=useDispatch<AppDispatch>();
 
-    const {loading,userInfo,error}=useSelector((state:ReduxState)=>state.userRegister)
+    const {loading,userInfo,error}=useSelector((state:RootState)=>state.userRegister)
     // const {loading:loadingRegister,userInfo:userInfoRegister,error:errorRegister}=useSelector((state:ReduxState)=>state.userRegister)
 
     const resetFormData=()=>{

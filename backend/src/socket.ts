@@ -2,19 +2,18 @@ import { IncomingMessage, Server, ServerResponse } from "http";
 import {Socket} from "socket.io"
 
 
-let io:Server<typeof IncomingMessage, typeof ServerResponse>;
+let io:any;
 
-export const init=(serverOrHttpServer:Server<typeof IncomingMessage, typeof ServerResponse>)=>{
+export const init=(serverOrHttpServer:Server)=>{
         io=require("socket.io")(serverOrHttpServer,{
             pingTimeout:60000,
             cors: {
-                origin: "http://loaclhost:3000",//* for all
-                // methods: ["GET", "POST"]
-              },
-            //   allowRequest: (req: { headers: { origin: undefined; }; }, callback: (arg0: null, arg1: boolean) => void) => {
-            //     const noOriginHeader = req.headers.origin === undefined;
-            //     callback(null, noOriginHeader);
-            //   }
+                origin: "*",
+                methods: ["GET", "POST"],
+                // transports: ['websocket', 'polling'],
+                // credentials: true
+            },
+            // allowEIO3: true
         });
         return io;
     } 

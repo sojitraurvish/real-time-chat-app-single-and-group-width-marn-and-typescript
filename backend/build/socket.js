@@ -6,13 +6,12 @@ const init = (serverOrHttpServer) => {
     io = require("socket.io")(serverOrHttpServer, {
         pingTimeout: 60000,
         cors: {
-            origin: "http://loaclhost:3000", //* for all
-            // methods: ["GET", "POST"]
+            origin: "*",
+            methods: ["GET", "POST"],
+            // transports: ['websocket', 'polling'],
+            // credentials: true
         },
-        //   allowRequest: (req: { headers: { origin: undefined; }; }, callback: (arg0: null, arg1: boolean) => void) => {
-        //     const noOriginHeader = req.headers.origin === undefined;
-        //     callback(null, noOriginHeader);
-        //   }
+        // allowEIO3: true
     });
     return io;
 };

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import styled from "styled-components"
 import { login } from "../../store/actions/userActions"
-import { AppDispatch } from "../../store/store"
-import { ReduxState } from "../../store/types"
+import { AppDispatch, RootState } from "../../store/store"
+// import { ReduxState } from "../../store/types"
 import Loader from "../Loader"
 
 export type Props={
@@ -28,7 +28,7 @@ const Login:FC<Props>=({visible})=>{
     const navigate=useNavigate();
     const dispatch=useDispatch<AppDispatch>();
 
-    const {loading,userInfo,error}=useSelector((state:ReduxState)=>state.userLogin)
+    const {loading,userInfo,error}=useSelector((state:RootState)=>state.userLogin)
 
     useEffect(()=>{
         if(userInfo){
